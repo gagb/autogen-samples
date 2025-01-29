@@ -8,10 +8,11 @@ from autogen_ext.models.openai import OpenAIChatCompletionClient
 async def main(semaphore):
     async with semaphore:
         client = OpenAIChatCompletionClient(model="gpt-4o", temperature=0.7)
-        agent = AssistantAgent(name="assistant", model_client=client)
-        team = RoundRobinGroupChat([agent], max_turns=10)
+        agent = AssistantAgent(name="assistant", model_client=client, system_message="Generate short beautiful poems")
+        critic = AssistantAgent(name="critic", model_client=client, system_message="Review the poem")
+        team = RoundRobinGroupChat([agent, critic], max_turns=10)
 
-        async for msg in team.run_stream(task="Create a plan to find latest news about AutoGen."):
+        async for msg in team.run_stream(task="Generate poem."):
             print(str(msg)[:80])
 
 async def run_multiple_times(n_tasks, pool_size=2):
