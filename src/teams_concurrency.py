@@ -20,4 +20,4 @@ async def run_multiple_times(n_tasks, pool_size=2):
     await asyncio.gather(*tasks)
 
 if __name__ == "__main__":
-    asyncio.run(run_multiple_times(5))  # Change the number 5 to the desired number of parallel runs
+    asyncio.run(run_multiple_times(n_tasks=5))
